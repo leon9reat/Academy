@@ -1,4 +1,4 @@
-package com.medialink.academy.ui
+package com.medialink.academy.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
