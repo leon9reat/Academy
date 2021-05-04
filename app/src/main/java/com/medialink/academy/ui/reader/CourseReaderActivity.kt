@@ -1,7 +1,9 @@
 package com.medialink.academy.ui.reader
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import com.medialink.academy.R
 import com.medialink.academy.ui.reader.content.ModuleContentFragment
 import com.medialink.academy.ui.reader.list.ModuleListFragment
@@ -12,6 +14,8 @@ class CourseReaderActivity : AppCompatActivity(), CourseReaderCallback {
         const val EXTRA_COURSE_ID = "extra_course_id"
     }
 
+    private val viewModel: CourseReaderViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_reader)
@@ -20,6 +24,7 @@ class CourseReaderActivity : AppCompatActivity(), CourseReaderCallback {
         if (bundle != null) {
             val courseId = bundle.getString(EXTRA_COURSE_ID)
             if (courseId != null) {
+                viewModel.setSelectedCourse(courseId)
                 populateFragment()
             }
         }
