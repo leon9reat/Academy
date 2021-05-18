@@ -1,6 +1,7 @@
 package com.medialink.academy.ui.academy
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.medialink.academy.databinding.FragmentAcademyBinding
+import com.medialink.academy.viewmodel.ViewModelFactory
 
 class AcademyFragment : Fragment() {
     private lateinit var fragmentAcademyBinding: FragmentAcademyBinding
-    private val viewModel: AcademyViewModel by viewModels()
+    //private val viewModel: AcademyViewModel by viewModels()
+    //private lateinit var viewMOdel: AcademyViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +38,12 @@ class AcademyFragment : Fragment() {
             )[AcademyViewModel::class.java]}
 
             //val viewModel = ViewModelProvider(this).get(AcademyViewModel::class.java)
+
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            val viewModel = ViewModelProvider(this, factory).get(AcademyViewModel::class.java)
             val courses = viewModel.getCourses()
+            Log.d("TAG", "onViewCreated: "+courses.size)
+
             val academyAdapter = AcademyAdapter()
             academyAdapter.setCourses(courses)
 

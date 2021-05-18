@@ -1,9 +1,10 @@
 package com.medialink.academy.ui.academy
 
 import androidx.lifecycle.ViewModel
+import com.medialink.academy.data.source.AcademyRepository
 import com.medialink.academy.ui.CourseEntity
-import com.medialink.academy.utils.DataDummy
 
-class AcademyViewModel: ViewModel() {
-    fun getCourses(): List<CourseEntity> = DataDummy.generateDummyCourses()
+class AcademyViewModel(private val academyRepository: AcademyRepository) : ViewModel() {
+    // fun getCourses(): List<CourseEntity> = DataDummy.generateDummyCourses()
+    fun getCourses(): List<CourseEntity> = academyRepository.getAllCourses()
 }

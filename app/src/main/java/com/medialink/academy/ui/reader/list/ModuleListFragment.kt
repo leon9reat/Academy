@@ -14,6 +14,7 @@ import com.medialink.academy.databinding.FragmentModuleListBinding
 import com.medialink.academy.ui.reader.CourseReaderActivity
 import com.medialink.academy.ui.reader.CourseReaderCallback
 import com.medialink.academy.ui.reader.CourseReaderViewModel
+import com.medialink.academy.viewmodel.ViewModelFactory
 
 class ModuleListFragment : Fragment(), MyAdapterClickListener {
 
@@ -38,7 +39,8 @@ class ModuleListFragment : Fragment(), MyAdapterClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity()).get(CourseReaderViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        viewModel = ViewModelProvider(requireActivity(), factory).get(CourseReaderViewModel::class.java)
         adapter = ModuleListAdapter(this)
         populateRecyclerView(viewModel.getModules())
     }

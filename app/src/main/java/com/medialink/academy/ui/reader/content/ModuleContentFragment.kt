@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.medialink.academy.data.ModuleEntity
 import com.medialink.academy.databinding.FragmentModuleContentBinding
 import com.medialink.academy.ui.reader.CourseReaderViewModel
+import com.medialink.academy.viewmodel.ViewModelFactory
 
 
 class ModuleContentFragment : Fragment() {
@@ -23,7 +24,7 @@ class ModuleContentFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         fragmentModuleContentBinding =
             FragmentModuleContentBinding.inflate(inflater, container, false)
         return fragmentModuleContentBinding.root
@@ -32,7 +33,8 @@ class ModuleContentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val viewModel = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory())[CourseReaderViewModel::class.java]
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            val viewModel = ViewModelProvider(requireActivity(), factory)[CourseReaderViewModel::class.java]
             val module = viewModel.getSelectedModule()
 
             /*val content = ContentEntity("<h3 class=\\\"fr-text-bordered\\\">Contoh Content'." +

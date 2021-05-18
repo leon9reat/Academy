@@ -3,9 +3,10 @@ package com.medialink.academy.ui.reader
 import androidx.lifecycle.ViewModel
 import com.medialink.academy.data.ContentEntity
 import com.medialink.academy.data.ModuleEntity
+import com.medialink.academy.data.source.AcademyRepository
 import com.medialink.academy.utils.DataDummy
 
-class CourseReaderViewModel : ViewModel() {
+class CourseReaderViewModel(private val academyRepository: AcademyRepository) : ViewModel() {
 
     private lateinit var courseId: String
     private lateinit var moduleId: String
@@ -18,11 +19,12 @@ class CourseReaderViewModel : ViewModel() {
         this.moduleId = moduleId
     }
 
-    fun getModules(): ArrayList<ModuleEntity> =
-        DataDummy.generateDummyModules(courseId) as ArrayList<ModuleEntity>
+    /*fun getModules(): ArrayList<ModuleEntity> =
+        DataDummy.generateDummyModules(courseId) as ArrayList<ModuleEntity>*/
+    fun getModules(): ArrayList<ModuleEntity> = academyRepository.getAllModulesByCourse(courseId) as ArrayList<ModuleEntity>
 
     fun getSelectedModule(): ModuleEntity {
-        lateinit var module: ModuleEntity
+        /*lateinit var module: ModuleEntity
         val moduleEntities = getModules()
         for (moduleEntity in moduleEntities) {
             if (moduleEntity.moduleId == moduleId) {
@@ -40,6 +42,7 @@ class CourseReaderViewModel : ViewModel() {
             }
         }
 
-        return module
+        return module*/
+        return academyRepository.getContent(courseId, moduleId)
     }
 }

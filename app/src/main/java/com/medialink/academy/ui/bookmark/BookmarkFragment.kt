@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.medialink.academy.R
 import com.medialink.academy.databinding.FragmentBookmarkBinding
 import com.medialink.academy.ui.CourseEntity
+import com.medialink.academy.viewmodel.ViewModelFactory
 
 
 class BookmarkFragment : Fragment(), BookmarkFragmentCallback {
@@ -30,8 +31,10 @@ class BookmarkFragment : Fragment(), BookmarkFragmentCallback {
             //val courses = DataDummy.generateDummyCourses()
 
             //val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[BookmarkViewModel::class.java]
-            val viewModel = ViewModelProvider(this).get(BookmarkViewModel::class.java)
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            val viewModel = ViewModelProvider(this, factory).get(BookmarkViewModel::class.java)
             val courses = viewModel.getBookmarks()
+
             val adapter = BookmarkAdapter(this)
             adapter.setCourses(courses)
             with(fragmentBookmarkBinding.rvBookmark) {

@@ -15,6 +15,7 @@ import com.medialink.academy.databinding.ContentDetailCourseBinding
 import com.medialink.academy.ui.CourseEntity
 import com.medialink.academy.ui.reader.CourseReaderActivity
 import com.medialink.academy.utils.DataDummy
+import com.medialink.academy.viewmodel.ViewModelFactory
 
 class DetailCourseActivity : AppCompatActivity() {
 
@@ -35,7 +36,8 @@ class DetailCourseActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val adapter = DetailCourseAdapter()
-        val viewModel = ViewModelProvider(this).get(DetailCourseViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(this)
+        val viewModel = ViewModelProvider(this, factory).get(DetailCourseViewModel::class.java)
 
         val extras = intent.extras
         if (extras != null) {
