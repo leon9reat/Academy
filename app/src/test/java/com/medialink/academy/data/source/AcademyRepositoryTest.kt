@@ -81,6 +81,7 @@ class AcademyRepositoryTest {
                 .onAllModulesReceived(moduleResponses)
             null
         }.`when`(remote).getModules(eq(courseId), any())
+
         doAnswer { invocation ->
             (invocation.arguments[1] as RemoteDataSource.LoadContentCallback)
                 .onContentReceived(content)
