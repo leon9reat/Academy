@@ -42,10 +42,18 @@ class AcademyFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireActivity())
             val viewModel = ViewModelProvider(this, factory).get(AcademyViewModel::class.java)
             val courses = viewModel.getCourses()
-            Log.d("TAG", "onViewCreated: "+courses.size)
+            //Log.d("TAG", "onViewCreated: "+courses.size)
 
             val academyAdapter = AcademyAdapter()
-            academyAdapter.setCourses(courses)
+
+            fragmentAcademyBinding.progressBar.visibility = View.VISIBLE
+            viewModel.getCourses().observe(viewLifecycleOwner, { courses ->
+                fragmentAcademyBinding.progressBar.visibility = View.GONE
+                academyAdapter.setCourses(courses)
+                academyAdapter.notifyDataSetChanged()
+            })
+
+            //academyAdapter.setCourses(courses)
 
             with(fragmentAcademyBinding.rvAcademy) {
                 layoutManager = LinearLayoutManager(context)

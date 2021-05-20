@@ -46,7 +46,14 @@ class ModuleContentFragment : Fragment() {
                     "nulla pariatur. Excepteur sint occaecat cupidatat non proident, " +
                     "sunt in culpa qui officia deserunt mollit anim id est laborum.</p>")*/
 
-            populateWeb(module)
+            //populateWeb(module)
+            fragmentModuleContentBinding.progressBar.visibility = View.VISIBLE
+            viewModel.getSelectedModule().observe(this, { module ->
+                fragmentModuleContentBinding.progressBar.visibility = View.GONE
+                if (module != null) {
+                    populateWeb(module)
+                }
+            })
         }
     }
 

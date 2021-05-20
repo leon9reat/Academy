@@ -1,5 +1,6 @@
 package com.medialink.academy.ui.reader
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.medialink.academy.data.ContentEntity
 import com.medialink.academy.data.ModuleEntity
@@ -21,9 +22,11 @@ class CourseReaderViewModel(private val academyRepository: AcademyRepository) : 
 
     /*fun getModules(): ArrayList<ModuleEntity> =
         DataDummy.generateDummyModules(courseId) as ArrayList<ModuleEntity>*/
-    fun getModules(): ArrayList<ModuleEntity> = academyRepository.getAllModulesByCourse(courseId) as ArrayList<ModuleEntity>
+    //fun getModules(): ArrayList<ModuleEntity> = academyRepository.getAllModulesByCourse(courseId) as ArrayList<ModuleEntity>
+    fun getModules(): LiveData<List<ModuleEntity>> =
+        academyRepository.getAllModulesByCourse(courseId)
 
-    fun getSelectedModule(): ModuleEntity {
+    /*fun getSelectedModule(): ModuleEntity {
         /*lateinit var module: ModuleEntity
         val moduleEntities = getModules()
         for (moduleEntity in moduleEntities) {
@@ -44,5 +47,8 @@ class CourseReaderViewModel(private val academyRepository: AcademyRepository) : 
 
         return module*/
         return academyRepository.getContent(courseId, moduleId)
-    }
+    }*/
+
+    fun getSelectedModule(): LiveData<ModuleEntity> =
+        academyRepository.getContent(courseId, moduleId)
 }

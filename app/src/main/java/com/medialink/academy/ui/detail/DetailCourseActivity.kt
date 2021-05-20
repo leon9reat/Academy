@@ -2,6 +2,7 @@ package com.medialink.academy.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -43,12 +44,22 @@ class DetailCourseActivity : AppCompatActivity() {
         if (extras != null) {
             val courseId = extras.getString(EXTRA_COURSE)
             if (courseId != null) {
+                activityDetailCourseBinding.detailContent.progressBar.visibility = View.VISIBLE
+                //activityDetailCourseBinding.content.visibility = View.INVISIBLE
+
                 viewModel.setSelectedCourse(courseId)
                 //val modules = DataDummy.generateDummyModules(courseId)
-                val modules = viewModel.getModules()
+                //val modules = viewModel.getModules()
+                viewModel.getModules().observe(this, { modules ->
+                    activityDetailCourseBinding.detailContent.progressBar.visibility = View.GONE
+                    //activityDetailCourseBinding.content.visibility = View.VISIBLE
+                    adapter.setModules(modules)
+                    adapter.notifyDataSetChanged()
+                })
 
-                adapter.setModules(modules)
-                populateCourse(viewModel.getCourse())
+                //adapter.setModules(modules)
+                //populateCourse(viewModel.getCourse())
+                viewModel.getCourse().observe(this, { course -> populateCourse(course) })
                 /*for (course in DataDummy.generateDummyCourses()) {
                     if (course.courseId == courseId) {
                         populateCourse(course)
