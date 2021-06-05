@@ -1,20 +1,23 @@
 package com.medialink.academy.data.source
 
 import androidx.lifecycle.LiveData
-import com.medialink.academy.data.ModuleEntity
-import com.medialink.academy.ui.CourseEntity
+import com.medialink.academy.data.source.local.entity.*
+import com.medialink.academy.vo.Resource
 
 interface AcademyDataSource {
 
-    fun getAllCourses(): LiveData<List<CourseEntity>>
+    fun getAllCourses(): LiveData<Resource<List<CourseEntity>>>
 
     fun getBookmarkedCourses(): LiveData<List<CourseEntity>>
 
-    fun getCourseWithModules(courseId: String): LiveData<CourseEntity>
+    fun getCourseWithModules(courseId: String): LiveData<Resource<CourseWithModule>>
 
-    fun getAllModulesByCourse(courseId: String): LiveData<List<ModuleEntity>>
+    fun getAllModulesByCourse(courseId: String): LiveData<Resource<List<ModuleEntity>>>
 
-    fun getContent(courseId: String, moduleId: String): LiveData<ModuleEntity>
+    fun getContent(moduleId: String): LiveData<Resource<ModuleEntity>>
 
+    fun setCourseBookmark(course: CourseEntity, state: Boolean)
+
+    fun setReadModule(module: ModuleEntity)
 
 }
