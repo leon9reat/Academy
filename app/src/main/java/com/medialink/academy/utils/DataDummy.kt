@@ -1,10 +1,7 @@
 package com.medialink.academy.utils
 
-import com.medialink.academy.data.ModuleEntity
-import com.medialink.academy.data.source.remote.response.ContentResponse
-import com.medialink.academy.data.source.remote.response.CourseResponse
-import com.medialink.academy.data.source.remote.response.ModuleResponse
-import com.medialink.academy.ui.CourseEntity
+import com.medialink.academy.data.source.local.entity.*
+import com.medialink.academy.data.source.remote.response.*
 
 object DataDummy {
     fun generateDummyCourses(): List<CourseEntity> {
@@ -246,5 +243,19 @@ object DataDummy {
 
     fun generateRemoteDummyContent(moduleId: String): ContentResponse {
         return ContentResponse(moduleId, "This is a dummy content")
+    }
+
+    fun generateDummyCourseWithModules(course: CourseEntity, bookmarked: Boolean): CourseWithModule {
+        course.bookmarked = bookmarked
+        return CourseWithModule(course, generateDummyModules(course.courseId))
+    }
+
+    fun generateDummyContent(moduleId: String): ContentEntity =
+        ContentEntity("This is a dummy content")
+
+    fun generateDummyModuleWithContent(courseId: String): ModuleEntity {
+        val moduleEntity = generateDummyModules(courseId)[0]
+        moduleEntity.contentEntity = generateDummyContent(moduleEntity.moduleId)
+        return moduleEntity
     }
 }

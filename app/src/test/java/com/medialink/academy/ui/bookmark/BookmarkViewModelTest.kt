@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.medialink.academy.data.source.AcademyRepository
-import com.medialink.academy.ui.CourseEntity
+import com.medialink.academy.data.source.local.entity.CourseEntity
 import com.medialink.academy.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals

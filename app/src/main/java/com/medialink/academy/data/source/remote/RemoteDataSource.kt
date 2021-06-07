@@ -35,7 +35,6 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
 
         handler.postDelayed({
             resultCourse.value = ApiResponse.success(jsonHelper.loadCourses())
-            //callback.onAllCoursesReceived(jsonHelper.loadCourses())
             EspressoIdlingResource.decrement()
         }, SERVICE_LATENCY_IN_MILLIS)
         return resultCourse
@@ -47,7 +46,6 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         handler.postDelayed(
             {
                 resultModules.value = ApiResponse.success(jsonHelper.loadModule(courseId))
-                //callback.onAllModulesReceived(jsonHelper.loadModule(courseId))
                 EspressoIdlingResource.decrement()
             },
             SERVICE_LATENCY_IN_MILLIS
@@ -60,7 +58,6 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         val resultContent = MutableLiveData<ApiResponse<ContentResponse>>()
         handler.postDelayed(
             {
-                //callback.onContentReceived(jsonHelper.loadContent(moduleId))
                 resultContent.value = ApiResponse.success(jsonHelper.loadContent(moduleId))
                 EspressoIdlingResource.decrement()
             },
@@ -69,15 +66,4 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         return resultContent
     }
 
-    interface LoadCoursesCallback {
-        fun onAllCoursesReceived(courseResponses: List<CourseResponse>)
-    }
-
-    interface LoadModulesCallback {
-        fun onAllModulesReceived(moduleResponses: List<ModuleResponse>)
-    }
-
-    interface LoadContentCallback {
-        fun onContentReceived(contentResponse: ContentResponse)
-    }
 }

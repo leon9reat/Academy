@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.medialink.academy.R
+import com.medialink.academy.data.source.local.entity.CourseEntity
 import com.medialink.academy.databinding.FragmentBookmarkBinding
-import com.medialink.academy.ui.CourseEntity
 import com.medialink.academy.viewmodel.ViewModelFactory
 
 

@@ -3,10 +3,11 @@ package com.medialink.academy.ui.reader
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.medialink.academy.data.ContentEntity
-import com.medialink.academy.data.ModuleEntity
 import com.medialink.academy.data.source.AcademyRepository
+import com.medialink.academy.data.source.local.entity.ContentEntity
+import com.medialink.academy.data.source.local.entity.ModuleEntity
 import com.medialink.academy.utils.DataDummy
+import com.medialink.academy.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
 import org.junit.Before
@@ -15,6 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -34,10 +36,10 @@ class CourseReaderViewModelTest {
     private lateinit var academyRepository: AcademyRepository
 
     @Mock
-    private lateinit var modulesObserver: Observer<List<ModuleEntity>>
+    private lateinit var modulesObserver: Observer<Resource<List<ModuleEntity>>>
 
     @Mock
-    private lateinit var moduleObserver: Observer<ModuleEntity>
+    private lateinit var moduleObserver: Observer<Resource<ModuleEntity>>
 
     @Before
     fun setUp() {
@@ -52,36 +54,27 @@ class CourseReaderViewModelTest {
 
     @Test
     fun getModules() {
-        val modules = MutableLiveData<List<ModuleEntity>>()
-        modules.value = dummyModules
+        val modules = MutableLiveData<Resource<List<ModuleEntity>>>()
+        val resource = Resource.success(dummyModules)
+        modules.value = resource
 
         Mockito.`when`(academyRepository.getAllModulesByCourse(courseId)).thenReturn(modules)
-        val moduleEntities = viewModel.getModules().value
-        Mockito.verify(academyRepository).getAllModulesByCourse(courseId)
-        assertNotNull(moduleEntities)
-        assertEquals(7, moduleEntities?.size)
+        val observer = mock(Observer::class.java) as Observer<Resource<List<ModuleEntity>>>
 
-        viewModel.getModules().observeForever(modulesObserver)
-        verify(modulesObserver).onChanged(dummyModules)
+        viewModel.modules.observeForever(observer)
+        verify(observer).onChanged(resource)
     }
 
     @Test
     fun getSelectedModule() {
-        val module = MutableLiveData<ModuleEntity>()
-        module.value = dummyModules[0]
+        val module = MutableLiveData<Resource<ModuleEntity>>()
+        val resource = Resource.success(dummyModules[0])
+        module.value = resource
 
-        Mockito.`when`(academyRepository.getContent(courseId, moduleId)).thenReturn(module)
-        val moduleEntity = viewModel.getSelectedModule().value as ModuleEntity
+        Mockito.`when`(academyRepository.getContent(moduleId)).thenReturn(module)
 
-        Mockito.verify(academyRepository).getContent(courseId, moduleId)
-        assertNotNull(moduleEntity)
-        val contentEntity = moduleEntity.contentEntity
-        assertNotNull(contentEntity)
-        val content = contentEntity?.content
-        assertNotNull(content)
-        assertEquals(content, dummyModules[0].contentEntity?.content)
-
-        viewModel.getSelectedModule().observeForever(moduleObserver)
-        verify(moduleObserver).onChanged(dummyModules[0])
+        val observer = mock(Observer::class.java) as Observer<Resource<ModuleEntity>>
+        viewModel.selectedModule.observeForever(observer)
+        verify(observer).onChanged(resource)
     }
 }

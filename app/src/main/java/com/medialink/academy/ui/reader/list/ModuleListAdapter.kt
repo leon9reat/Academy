@@ -3,7 +3,7 @@ package com.medialink.academy.ui.reader.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.medialink.academy.data.ModuleEntity
+import com.medialink.academy.data.source.local.entity.ModuleEntity
 import com.medialink.academy.databinding.ItemsModuleListCustomBinding
 
 
@@ -40,8 +40,8 @@ class ModuleListAdapter internal constructor(private val listener: MyAdapterClic
         holder.bind(module)
         holder.itemView.setOnClickListener {
             listener.onItemClicked(
-                holder.absoluteAdapterPosition,
-                listModules[holder.absoluteAdapterPosition].moduleId
+                holder.adapterPosition,
+                listModules[holder.adapterPosition].moduleId
             )
         }
     }

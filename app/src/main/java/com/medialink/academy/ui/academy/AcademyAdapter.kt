@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.medialink.academy.R
+import com.medialink.academy.data.source.local.entity.CourseEntity
 import com.medialink.academy.databinding.ItemsAcademyBinding
-import com.medialink.academy.ui.CourseEntity
 import com.medialink.academy.ui.detail.DetailCourseActivity
 
 class AcademyAdapter : RecyclerView.Adapter<AcademyAdapter.CourseViewHolder>() {
