@@ -3,9 +3,9 @@ package com.medialink.academy.ui.bookmark
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.medialink.academy.data.source.AcademyRepository
 import com.medialink.academy.data.source.local.entity.CourseEntity
-import com.medialink.academy.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -29,7 +29,10 @@ class BookmarkViewModelTest {
     private lateinit var academyRepository: AcademyRepository
 
     @Mock
-    private lateinit var observer: Observer<List<CourseEntity>>
+    private lateinit var observer: Observer<PagedList<CourseEntity>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<CourseEntity>
 
     @Before
     fun setUp() {
@@ -38,8 +41,9 @@ class BookmarkViewModelTest {
 
     @Test
     fun getBookmarks() {
-        val dummyCourses = DataDummy.generateDummyCourses()
-        val courses = MutableLiveData<List<CourseEntity>>()
+        val dummyCourses = pagedList
+        Mockito.`when`(dummyCourses.size).thenReturn(5)
+        val courses = MutableLiveData<PagedList<CourseEntity>>()
         courses.value = dummyCourses
 
         Mockito.`when`(academyRepository.getBookmarkedCourses()).thenReturn(courses)

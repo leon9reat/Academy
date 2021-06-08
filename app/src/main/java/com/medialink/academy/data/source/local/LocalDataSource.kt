@@ -1,14 +1,26 @@
 package com.medialink.academy.data.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.medialink.academy.data.source.local.entity.*
 import com.medialink.academy.data.source.local.room.*
 
 class LocalDataSource private constructor(private val mAcademyDao: AcademyDao){
 
-    fun getAllCourses(): LiveData<List<CourseEntity>> = mAcademyDao.getCourses()
+    companion object {
+        private var INSTANCE: LocalDataSource? = null
 
-    fun getBookmarkedCourses(): LiveData<List<CourseEntity>> = mAcademyDao.getBookmarkedCourse()
+        fun getInstance(academyDao: AcademyDao): LocalDataSource =
+            INSTANCE ?: LocalDataSource(academyDao).apply {
+                INSTANCE = this
+            }
+
+    }
+
+    fun getAllCourses(): DataSource.Factory<Int, CourseEntity> = mAcademyDao.getCourses()
+
+    fun getBookmarkedCourses(): DataSource.Factory<Int, CourseEntity> =
+        mAcademyDao.getBookmarkedCourse()
 
     fun getCourseWithModules(courseId: String): LiveData<CourseWithModule> =
         mAcademyDao.getCourseWithModuleById(courseId)
@@ -16,9 +28,13 @@ class LocalDataSource private constructor(private val mAcademyDao: AcademyDao){
     fun getAllModulesByCourse(courseId: String): LiveData<List<ModuleEntity>> =
         mAcademyDao.getModulesByCourseId(courseId)
 
-    fun insertCourses(courses: List<CourseEntity>) = mAcademyDao.insertCourses(courses)
+    fun insertCourses(courses: List<CourseEntity>) {
+        mAcademyDao.insertCourses(courses)
+    }
 
-    fun insertModules(modules: List<ModuleEntity>) = mAcademyDao.insertModules(modules)
+    fun insertModules(modules: List<ModuleEntity>) {
+        mAcademyDao.insertModules(modules)
+    }
 
     fun setCourseBookmark(course: CourseEntity, newState: Boolean) {
         course.bookmarked = newState
@@ -35,14 +51,6 @@ class LocalDataSource private constructor(private val mAcademyDao: AcademyDao){
     fun setReadModule(module: ModuleEntity) {
         module.read = true
         mAcademyDao.updateModule(module)
-    }
-
-    companion object {
-
-        private var INSTANCE: LocalDataSource? = null
-
-        fun getInstance(academyDao: AcademyDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(academyDao)
     }
 
 }
